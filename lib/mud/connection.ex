@@ -1,8 +1,8 @@
 require Logger
 
-defmodule RPG.Connection do
+defmodule MUD.Connection do
   def create(socket) do
-    {:ok, pid} = RPG.State.start_link()
+    {:ok, pid} = MUD.State.start_link()
     recv({:ok, ""}, pid, socket) # Initialize MUD
     serve(socket, pid)
   end
@@ -22,14 +22,14 @@ defmodule RPG.Connection do
 
   defp input(action, pid, socket) do
     pid
-    |> RPG.State.get
+    |> MUD.State.get
     |> Map.to_list
-    |> RPG.Script.input(action)
+    |> MUD.Script.input(action)
     |> response(pid, socket)
 
     :gen_tcp.send(socket, "\r\n> ")
   end
 
   defp response({:error, reason}, _pid, socket), do: :gen_tcp.send(socket, "[!] #{reason}")
-  defp response({:ok, actions}, pid, socket), do: actions |> Enum.each(fn [action | args] -> RPG.Response.handle(action, args, pid, socket) end)
+  defp response({:ok, actions}, pid, socket), do: actions |> Enum.each(fn [action | args] -> MUD.Response.handle(action, args, pid, socket) end)
 end

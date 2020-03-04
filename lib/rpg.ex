@@ -1,23 +1,23 @@
 require Logger
 
-defmodule RPG do
+defmodule MUD do
   use Application
 
   @moduledoc """
-  Documentation for `RPG`.
+  Documentation for `MUD`.
   """
 
   def start(_type, _args) do
-    Logger.info("RPG Server is starting...")
+    Logger.info("MUD Server is starting...")
 
     port = System.get_env("PORT") || 6666
 
     children = [
-      {RPG.Script, "lib/scripts"},
-      {Task.Supervisor, name: RPG.TaskSupervisor},
-      {RPG.Server, port},
+      {MUD.Script, "lib/scripts"},
+      {Task.Supervisor, name: MUD.TaskSupervisor},
+      {MUD.Server, port},
     ]
-    options = [strategy: :one_for_one, name: RPG.Supervisor]
+    options = [strategy: :one_for_one, name: MUD.Supervisor]
 
     Supervisor.start_link(children, options)
   end

@@ -1,6 +1,6 @@
 require Logger
 
-defmodule RPG.Server do
+defmodule MUD.Server do
   use GenServer
 
   def start_link(port) do
@@ -8,14 +8,14 @@ defmodule RPG.Server do
   end
 
   def init(port) do
-    Logger.info("RPG Server is listen on 0.0.0.0:#{port}")
+    Logger.info("MUD Server is listen on 0.0.0.0:#{port}")
     {:ok, socket} = :gen_tcp.listen(port, [:binary, packet: :line, active: false, reuseaddr: true])
-    Task.Supervisor.start_child(RPG.TaskSupervisor, fn -> loop(socket) end)
+    Task.Supervisor.start_child(MUD.TaskSupervisor, fn -> loop(socket) end)
   end
 
   defp loop(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
-    {:ok, pid} = Task.Supervisor.start_child(RPG.TaskSupervisor, fn -> RPG.Connection.create(client) end)
+    {:ok, pid} = Task.Supervisor.start_child(MUD.TaskSupervisor, fn -> MUD.Connection.create(client) end)
     :ok = :gen_tcp.controlling_process(client, pid)
     loop(socket)
   end

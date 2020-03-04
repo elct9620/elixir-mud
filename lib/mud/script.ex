@@ -1,4 +1,4 @@
-defmodule RPG.Script do
+defmodule MUD.Script do
   use GenServer
   use Export.Ruby
 

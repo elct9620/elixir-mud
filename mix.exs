@@ -1,4 +1,4 @@
-defmodule RPG.MixProject do
+defmodule MUD.MixProject do
   use Mix.Project
 
   def project do
@@ -14,7 +14,7 @@ defmodule RPG.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {RPG, []},
+      mod: {MUD, []},
       extra_applications: [:logger, :export]
     ]
   end

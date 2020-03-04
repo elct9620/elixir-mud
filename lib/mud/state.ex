@@ -1,4 +1,4 @@
-defmodule RPG.State do
+defmodule MUD.State do
   use GenServer
 
   def start_link(state \\ %{chapter: 1, dialog: 0}) do
