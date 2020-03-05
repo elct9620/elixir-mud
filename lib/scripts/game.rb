@@ -7,7 +7,6 @@ require_relative './index'
 module MUD
   # :nodoc:
   class Game
-    include ErlPort::ErlTerm
     include ErlPort::Erlang
 
     def initialize(pid)

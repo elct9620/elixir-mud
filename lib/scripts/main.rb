@@ -4,8 +4,10 @@ require_relative './game'
 
 # :nodoc:
 module MUD
-  def self.create(dest)
+  include ErlPort::ErlTerm
+
+  def self.create(dest, pid)
     Game.new(dest)
-    :ok
+    Tuple.new([:ok, pid])
   end
 end

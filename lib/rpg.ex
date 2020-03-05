@@ -15,6 +15,7 @@ defmodule MUD do
     children = [
       {MUD.Script, "lib/scripts"},
       {Task.Supervisor, name: MUD.TaskSupervisor},
+      {Task.Supervisor, name: MUD.ConnectionSupervisor},
       {MUD.Server, port},
     ]
     options = [strategy: :one_for_one, name: MUD.Supervisor]

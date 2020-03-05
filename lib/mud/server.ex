@@ -15,7 +15,7 @@ defmodule MUD.Server do
 
   defp loop(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
-    {:ok, pid} = Task.Supervisor.start_child(MUD.TaskSupervisor, fn -> MUD.Connection.create(client) end)
+    {:ok, pid} = Task.Supervisor.start_child(MUD.ConnectionSupervisor, MUD.Connection, :create, [client])
     :ok = :gen_tcp.controlling_process(client, pid)
     loop(socket)
   end

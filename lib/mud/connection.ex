@@ -7,9 +7,7 @@ defmodule MUD.Connection do
     serve(socket, pid)
   end
 
-  defp serve(socket, pid) do
-    :gen_tcp.recv(socket, 0) |> recv(pid, socket)
-  end
+  defp serve(socket, pid), do: :gen_tcp.recv(socket, 0) |> recv(pid, socket)
 
   defp recv({:error, reason}, _pid, _socket), do: Logger.warn("Connection error: #{reason}")
   defp recv({:ok, data}, pid, socket), do:  process(data |> String.trim, pid, socket)
