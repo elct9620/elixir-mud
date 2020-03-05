@@ -44,7 +44,8 @@ module MUD
 
     def stories_path
       @stories_path ||=
-        Pathname.new(File.dirname(File.expand_path(__FILE__))).join('stories')
+        Pathname.new(File.dirname(File.expand_path(__FILE__)))
+                .join('../../../stories')
     end
   end
 end

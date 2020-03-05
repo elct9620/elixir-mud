@@ -13,7 +13,7 @@ defmodule MUD do
     port = System.get_env("PORT") || 6666
 
     children = [
-      {MUD.Script, "lib/scripts"},
+      {MUD.Script, "lib/ruby/dsl"},
       {Task.Supervisor, name: MUD.TaskSupervisor},
       {Task.Supervisor, name: MUD.ConnectionSupervisor},
       {MUD.Server, port},
