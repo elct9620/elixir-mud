@@ -1,3 +1,5 @@
+require Logger
+
 defmodule MUD.Script do
   use GenServer
   use Export.Ruby
@@ -7,20 +9,15 @@ defmodule MUD.Script do
   def init(path), do: Ruby.start_link(ruby_lib: Path.expand(path)) |> setup
   def setup({:ok, ruby}), do: ruby |> Ruby.call("main", "MUD::create", [self(), ruby])
 
-  def handle_call({:input, state, action}, from, ruby) do
-    ruby |> :ruby.cast({action, state, from})
+  def handle_cast({:input, {reaction, state}, action}, ruby) do
+    ruby |> :ruby.cast({reaction, state |> MUD.State.get, action})
     {:noreply, ruby}
   end
 
-  def handle_info({:error, reason, from}, ruby) do
-    GenServer.reply(from, {:error, reason})
+  def handle_info({:error, reason}, ruby) do
+    Logger.error(reason)
     {:noreply, ruby}
   end
 
-  def handle_info({action, message, from}, ruby) do
-    GenServer.reply(from, {action, message})
-    {:noreply, ruby}
-  end
-
-  def input(state, action), do: GenServer.call(__MODULE__, {:input, state, action})
+  def input(handler, action), do: GenServer.cast(__MODULE__, {:input, handler, action})
 end

@@ -6,7 +6,7 @@ module MUD
     attr_reader :chapter, :dialog
 
     def initialize(state)
-      state.map(&:to_a).each do |key, value|
+      state.each do |(key, value)|
         instance_variable_set("@#{key}", value)
       end
     end

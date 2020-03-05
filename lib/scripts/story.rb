@@ -1,24 +1,33 @@
 # frozen_string_literal: true
 
+require 'singleton'
 require 'pathname'
+require 'forwardable'
 require_relative './chapter'
 
 module MUD
-  # Story Index
-  class Index
+  # Story Manager
+  class Story
+    class << self
+      extend Forwardable
+
+      delegate %w[select_by] => :instance
+    end
+
     class ChapterNotFoundError < GameError; end
+
+    include Singleton
 
     def initialize
       @chapters = {}
       load_chapters
     end
 
-    def route(params)
-      chapter = @chapters[params.state.chapter]
+    def select_by(context)
+      chapter = @chapters[context.state.chapter]
       raise ChapterNotFoundError, 'Chapter not found' if chapter.nil?
 
-      actions = chapter.exec(params)
-      [:ok, actions, params.from]
+      chapter.exec(context)
     end
 
     private

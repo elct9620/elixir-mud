@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative './mud'
-require_relative './parameter'
-require_relative './index'
+require_relative './context'
+require_relative './story'
 
 module MUD
   # :nodoc:
@@ -11,18 +11,17 @@ module MUD
 
     def initialize(pid)
       @pid = pid
-      @index = Index.new
 
       set_message_handler(&method(:process))
     end
 
-    def process(message)
+    def process(args)
       Thread.new do
         begin
-          params = Parameter.new(message)
-          cast @pid, Tuple.new(@index.route(params))
+          context = Context.new(*args)
+          Story.select_by(context)
         rescue GameError => e
-          cast @pid, Tuple.new([:error, e.message, params.from])
+          cast @pid, Tuple.new([:error, e.message])
         end
       end
     end

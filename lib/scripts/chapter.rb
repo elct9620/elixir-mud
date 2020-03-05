@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
+require_relative './stage'
+
 module MUD
   # Story Chapter
   class Chapter
-    class DialogNotFoundError < GameError; end
+    class ActionNotFoundError < GameError; end
 
     def initialize(&block)
-      @dialogs = []
+      @actions = []
       instance_eval(&block)
     end
 
-    def dialog(&message)
-      @dialogs.push(message)
+    def action(&action)
+      @actions << action
     end
 
     def name(name = nil)
@@ -20,11 +22,11 @@ module MUD
       @name = name
     end
 
-    def exec(params)
-      dialog = @dialogs[params.state.dialog]
-      raise DialogNotFoundError, 'Dialog not found' if dialog.nil?
+    def exec(context)
+      action = @actions[context.state.dialog]
+      raise ActionNotFoundError, 'Action not found' if action.nil?
 
-      dialog.call(params)
+      Stage.new(context).play(&action)
     end
   end
 end
