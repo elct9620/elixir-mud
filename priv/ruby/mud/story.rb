@@ -3,7 +3,8 @@
 require 'singleton'
 require 'pathname'
 require 'forwardable'
-require_relative './chapter'
+
+require 'mud/chapter'
 
 module MUD
   # Story Manager
@@ -20,11 +21,11 @@ module MUD
 
     def initialize
       @chapters = {}
-      load_chapters
+      load_stories
     end
 
     def select_by(context)
-      chapter = @chapters[context.state.chapter]
+      chapter = @chapters[context.state[:chapter]]
       raise ChapterNotFoundError, 'Chapter not found' if chapter.nil?
 
       chapter.exec(context)
@@ -36,7 +37,7 @@ module MUD
       @chapters[name] = Chapter.new(&block)
     end
 
-    def load_chapters
+    def load_stories
       Dir["#{stories_path}/*.rb"].each do |path|
         instance_eval(File.read(path))
       end

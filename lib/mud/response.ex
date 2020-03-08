@@ -5,6 +5,5 @@ defmodule MUD.Response do
   def handle(:exit, _args, _pid, socket), do: socket |> :gen_tcp.close
 
   # State
-  def handle(:next, [amount | _], pid, _socket), do: pid |> MUD.State.next(amount)
-  def handle(:jmp, [index | _], pid, _socket), do: pid |> MUD.State.jump(index)
+  def handle(:jmp, [index | _], pid, _socket),do: pid |> Tide.State.put(:dialog, index)
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './stage'
+require 'mud/stage'
 
 module MUD
   # Story Chapter
@@ -23,7 +23,7 @@ module MUD
     end
 
     def exec(context)
-      action = @actions[context.state.dialog]
+      action = @actions[context.state[:dialog]]
       raise ActionNotFoundError, 'Action not found' if action.nil?
 
       Stage.new(context).play(&action)

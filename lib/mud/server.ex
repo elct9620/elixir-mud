@@ -8,6 +8,7 @@ defmodule MUD.Server do
   end
 
   def init(port) do
+    Tide.Worker.load("app")
     Logger.info("MUD Server is listen on 0.0.0.0:#{port}")
     {:ok, socket} = :gen_tcp.listen(port, [:binary, packet: :line, active: false, reuseaddr: true])
     Task.Supervisor.start_child(MUD.TaskSupervisor, fn -> loop(socket) end)

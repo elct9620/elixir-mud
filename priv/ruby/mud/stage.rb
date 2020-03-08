@@ -18,19 +18,19 @@ module MUD
     end
 
     def close
-      @context.reaction.exec(:exit)
+      @context.reaction.emit(:exit)
     end
 
     def say(message)
-      @context.reaction.exec(:msg, message)
+      @context.reaction.emit(:msg, message)
     end
 
     def jump(index)
-      @context.reaction.exec(:jmp, index.to_i)
+      @context.reaction.emit(:jmp, index.to_i)
     end
 
     def wait_input
-      @context.reaction.exec(:input)
+      @context.reaction.emit(:input)
     end
   end
 end
