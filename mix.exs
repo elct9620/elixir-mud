@@ -15,14 +15,14 @@ defmodule MUD.MixProject do
   def application do
     [
       mod: {MUD, []},
-      extra_applications: [:logger, :export]
+      extra_applications: [:logger, :tide]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:export, "~> 0.1.0"},
+      {:tide, "~> 0.1.0"},
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
