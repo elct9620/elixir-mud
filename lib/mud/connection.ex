@@ -11,6 +11,7 @@ defmodule MUD.Connection do
 
   defp serve(socket, agent), do: :gen_tcp.recv(socket, 0) |> recv(agent, socket)
 
+  defp recv({:error, :closed}, _pid, _socket), do: :ok
   defp recv({:error, reason}, _pid, _socket), do: Logger.warn("Connection error: #{reason}")
   defp recv({:ok, data}, agent, socket), do:  process(data |> String.trim, agent, socket)
 

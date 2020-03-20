@@ -13,7 +13,7 @@ defmodule MUD do
     port = System.get_env("PORT") || 6666
 
     children = [
-      {Tide.Worker, :code.priv_dir(:mud) |> Path.join("ruby") },
+      {Tide.Supervisor, root: :code.priv_dir(:mud) |> Path.join("ruby"), file: "app" },
       {Task.Supervisor, name: MUD.TaskSupervisor},
       {Task.Supervisor, name: MUD.ConnectionSupervisor},
       {MUD.Server, port},
